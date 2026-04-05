@@ -1,560 +1,387 @@
-<![CDATA[<div align="center">
+<div align="center">
 
-![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
-![Version](https://img.shields.io/badge/Version-0.3.0_Beta-blue?style=flat-square)
-![PHP](https://img.shields.io/badge/PHP-8.0+-777BB4?style=flat-square&logo=php&logoColor=white)
-![Firebase](https://img.shields.io/badge/Firebase-Auth-FFCA28?style=flat-square&logo=firebase&logoColor=black)
-![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+```
+ █████╗ ██████╗ ██╗  ██╗ █████╗ 
+██╔══██╗██╔══██╗██║ ██╔╝██╔══██╗
+███████║██████╔╝█████╔╝ ███████║
+██╔══██║██╔══██╗██╔═██╗ ██╔══██║
+██║  ██║██║  ██║██║  ██╗██║  ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝
+```
 
-# ✦ Arka AI
+### ✦ *Your Intelligent AI Companion*
 
-**Your Intelligent AI Companion**
+<br/>
 
-[![Powered by NVIDIA](https://img.shields.io/badge/Powered%20by-NVIDIA%20NIM-76B900?style=flat-square&logo=nvidia&logoColor=white)](https://build.nvidia.com)
+[![Status](https://img.shields.io/badge/Status-Live_Beta-e8622a?style=for-the-badge&logo=statuspage&logoColor=white)](https://arka.vyomagroup.online)
+[![Version](https://img.shields.io/badge/Version-0.3.0_Beta-1a1714?style=for-the-badge&logo=semver&logoColor=white)](https://vyomagroup.online/changelog/)
+[![PHP](https://img.shields.io/badge/PHP-8.0+-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
+[![Firebase](https://img.shields.io/badge/Firebase-v12.11.0-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com)
+[![License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)](LICENSE)
+[![Made in India](https://img.shields.io/badge/Made_in-India_🇮🇳-FF9933?style=for-the-badge)](https://vyomagroup.online)
 
-Arka AI is a premium, full-featured AI assistant built by **Vyoma Group**. It provides intelligent chat, image analysis, file analysis, deep reasoning, and an adaptive personality engine — all wrapped in a clean, modern interface inspired by Claude.ai and Linear.app.
+<br/>
 
-🌐 **Live:** [arka.vyomagroup.online](https://arka.vyomagroup.online) · **Model:** `qwen/qwen3.5-122b-a10b` via NVIDIA NIM
+**[🌐 Live App](https://arka.vyomagroup.online) • [📚 Docs](https://vyomagroup.online/docs/) • [📖 Blog](https://vyomagroup.online/blog/) • [💬 Contact](https://vyomagroup.online/contact/)**
+
+<br/>
+
+<img src="https://img.shields.io/badge/NVIDIA-NIM-76B900?style=flat-square&logo=nvidia&logoColor=white" />
+<img src="https://img.shields.io/badge/Qwen-3.5_122B-6366f1?style=flat-square&logoColor=white" />
+<img src="https://img.shields.io/badge/Google-Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black" />
+<img src="https://img.shields.io/badge/Vanilla-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" />
 
 </div>
 
 ---
 
-## 📑 Table of Contents
-
-- [Overview](#-overview)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [File Structure](#-file-structure)
-- [SVG Icons](#-svg-icons)
-- [Quick Start](#-quick-start)
-- [Deployment (Hostinger)](#-deployment-hostinger)
-- [Firebase Setup](#-firebase-setup)
-- [Configuration Reference](#-configuration-reference)
-- [localStorage Keys Reference](#-localstorage-keys-reference)
-- [Free vs Pro Plan](#-free-vs-pro-plan)
-- [Usage Limits](#-usage-limits)
-- [Keyboard Shortcuts](#-keyboard-shortcuts)
-- [API Reference](#-api-reference)
-- [System Prompts](#-system-prompts)
-- [Security](#-security)
-- [Known Issues / TODO](#-known-issues--todo)
-- [Roadmap](#-roadmap)
-- [About Vyoma Group](#-about-vyoma-group)
-- [License](#-license)
-
----
-
-## 🌟 Overview
-
-**Arka** (Sanskrit: "Sun" — radiant, powerful, illuminating) is an AI assistant designed to feel like a genius best friend. It adapts to the user's language (English, Hindi, Hinglish), expertise level, and emotional tone in real time.
-
-- **Built by:** Vyoma Group
-- **Live URL:** [arka.vyomagroup.online](https://arka.vyomagroup.online)
-- **Current Model:** `qwen/qwen3.5-122b-a10b` (Arka Standard) via NVIDIA NIM API
-- **Authentication:** Google Sign-In via Firebase (redirect flow)
-- **Data Storage:** Chat history stored locally in browser `localStorage`, with optional server-side backup via `history.php`
-
----
-
-## ✨ Features
-
-### 🔐 Google Authentication (Firebase)
-
-Firebase Authentication with Google Sign-In using the **redirect** flow (`signInWithRedirect`). Handles redirect results before `onAuthStateChanged` to prevent redirect loops on shared hosting.
-
-- **Auth error display** with specific messages for common errors (`popup-blocked`, `unauthorized-domain`, `network-request-failed`, etc.)
-- **HTTPS enforcement** in production (auto-redirects HTTP → HTTPS)
-- **Safety timeout:** If Firebase takes >5 seconds, the login screen is shown automatically
-- **Login screen** features a theme toggle, Google branded button, and branded Arka orb animation
-- **localStorage keys:** `arka_user` (stores `name`, `email`, `photo`, `uid`, `plan`, `joinedAt`)
-
-### ⏳ Loading Screen (No Flicker)
-
-A full-screen loading screen shows the Arka logo with a pulsing animation while Firebase resolves auth state. It uses inline styles to render immediately without waiting for CSS, preventing any white flash. Fades out with CSS transition once authentication is resolved.
-
-### 💬 Chat System
-
-Full-featured chat interface with:
-
-- **Markdown rendering** in AI responses (bold, italic, strikethrough, code blocks, headers, blockquotes, lists, links, horizontal rules)
-- **Code blocks** with syntax language tags and **Copy** button
-- **Auto-resize textarea** for multi-line input (max 150px height)
-- **Typing indicator** (three animated dots) while waiting for AI response
-- **Message timestamps** on each message
-- **User/AI avatars** with letter fallback for missing profile photos
-- **Welcome screen** with branded orb and four suggestion cards:
-  - Analyze Image
-  - Solve & Reason
-  - Code Help
-  - Learn & Explain
-- **Error messages** displayed as styled red bubbles with ⚠ icon
-- **Browser notifications** when Arka finishes responding and the tab is inactive
-- **Disclaimer:** "Arka can make mistakes. Verify important info."
-
-### 📂 Chat History (Star, Rename, Delete)
-
-Client-side chat history stored per-user in `localStorage`, with server-side backup to `history.php`.
-
-- **Per-user storage** keyed by Firebase UID (`arka_chats_{uid}`)
-- **Starred chats** appear at the top of the sidebar list
-- **Inline rename** — click rename from context menu, edit in-place, press Enter to save
-- **Context menu** on each chat (3-dot button):
-  - ⭐ Star / Unstar
-  - ✏️ Rename
-  - 📁 Add to Project (placeholder — shows "Coming Soon")
-  - 🗑 Delete
-- **Export current chat** as `.txt` file
-- **Clear All** chats with confirmation dialog
-- Auto-generates chat title from first user message (truncated to 40 chars)
-
-### 🖼 Image Analysis
-
-Vision-native image analysis using the qwen3.5-122b-a10b model via NVIDIA NIM:
-
-- **Upload methods:** File picker, Ctrl+V paste, drag & drop
-- **Attachment preview** with thumbnail and remove button
-- **Lightbox** for full-size image viewing on click
-- **Image sent as base64** data URL in the API payload
-- **Free plan limit:** 5 images per day (24h rolling window)
-- **Pro plan:** Unlimited
-- **Max file size:** 10 MB
-- **localStorage key:** `arka_image_usage_{uid}` (stores `count` and `resetTime`)
-
-### 📄 File Analysis (PDF, Code, Docs)
-
-Full file analysis pipeline with text extraction:
-
-- **Supported formats:** `.pdf`, `.doc`, `.docx`, `.txt`, `.md`, `.csv`, `.json`, `.js`, `.py`, `.php`, `.html`, `.css`, `.ts`, `.jsx`, `.tsx`, `.java`, `.cpp`, `.c`, `.rb`, `.go`, `.rs`, `.swift`, `.kt`
-- **PDF extraction** via PDF.js (`pdfjsLib`) — extracts text from all pages
-- **File preview chip** shows file icon (colored by type), filename, and size
-- **File content truncation** at 50,000 characters with notice
-- **File size limits:** Free: 10 MB, Pro: 50 MB
-- **Free plan limit:** 5 files per day (24h rolling window)
-- **localStorage key:** `arka_file_usage_{uid}` (stores `count` and `resetTime`)
-- **Attach popup menu** with two options: Upload Image / Upload File — each showing remaining daily count
-
-### 🧠 Deep Reasoning Toggle
-
-Activates a separate reasoning system prompt with structured analysis output:
-
-- **Toggle button** in the input bar with brain icon
-- **Active indicator:** Orange dot on button + "Deep Reasoning ON" pill above input
-- **Visual indicator** on AI messages that used reasoning (brain icon + "Deep Reasoning" label)
-- **Sends `reasoning: true`** in API payload, which adds `{ "reasoning": { "effort": "high" } }` to the NVIDIA request
-- **Free plan limit:** 3 deep reasoning uses per day
-- **Auto-disables** when limit is exhausted; shows warning badge
-- **localStorage key:** `arka_reasoning_usage_{uid}`
-
-### 🎭 Adaptive Personality Engine
-
-Real-time profile analysis that shapes Arka's responses:
-
-- **Language detection:** English, Hindi, Hinglish (via character analysis and keyword matching)
-- **Expertise detection:** Beginner, Intermediate, Expert (based on technical vocabulary density)
-- **Tone detection:** Casual, Formal, Emotional (based on word choice, exclamations, emojis)
-- **Topic tracking:** Detects topics across 10 categories (coding, maths, science, career, finance, health, writing, learning, legal, philosophy) — keeps last 15
-- **Message statistics:** Running count and average message length
-- **Profile summary** sent as context with every API request
-- **Blended expertise** — updates gradually (60% old, 40% new) to avoid sudden jumps
-- **localStorage key:** `arka_profile_{uid}`
-
-### 🧠 Memory System
-
-Local-first persistent memory organized into 5 categories:
-
-- **Categories:** Instructions, Identity, Career, Projects, Preferences
-- **Auto-extraction** from user messages via pattern matching:
-  - "always respond…" → Instructions
-  - "my name is…" → Identity
-  - "I'm building…" → Projects
-  - "I prefer…" → Preferences
-- **Memory Manager modal** — view, edit, delete, and add memories per category
-- **Import Memory** from other AI providers (ChatGPT, Claude, Gemini) via structured prompt + paste
-- **Export Memories** as `.txt` file
-- **Memory context** injected into system prompt (max 500 words)
-- **Toggle on/off** in Settings → Capabilities
-- **localStorage keys:** `arka_memory_{uid}`, `arka_settings_{uid}.memoryEnabled`
-
-### ⚙️ Settings Modal (6 Tabs)
-
-Full-screen settings panel with sidebar navigation:
-
-#### General Tab
-- Full name (editable, syncs to `arka_user`)
-- Nickname (what Arka calls you)
-- Occupation selection (10 preset pills + custom "Other" input):
-  - Developer/Engineer, Designer, Student, Business/Finance, Healthcare, Legal, Creative/Content, Marketing, Research/Science, Other
-- Freeform preferences textarea ("always respond in Hinglish…")
-- Link to Vyoma's Guidelines
-- Response completion notifications toggle (uses browser Notification API)
-- Save Changes button
-
-#### Account Tab
-- User card with photo/avatar, name, email, plan badge
-- Connected Google Account display
-- Account info table: User ID (copyable), Email, Plan, Joined date, Last Active
-- Current Session card: Device/OS, Browser, Location (via ipapi.co), Login Time, Status
-- Usage Stats (2×2 grid): Images, Deep Reasoning, Files Analyzed, Total Chats
-- Danger Zone: Clear all chat history, Delete Account (type "DELETE" to confirm)
-
-#### Privacy Tab
-- Expandable sections: "How we protect your data", "How we use your data"
-- Privacy toggles (instant-save):
-  - Location metadata
-  - Help improve Arka (anonymized usage data)
-  - Marketing emails
-- Data actions: Export Data (modal with date range filters), Clear conversation history
-
-#### Billing Tab
-- Current plan card with icon and upgrade button
-- Free plan features checklist (7 items)
-- Pro benefits grid (6 cards, some with "Coming Soon" chips)
-- Pricing card with Monthly/Yearly toggle:
-  - Monthly: ₹299/month
-  - Yearly: ₹2,499/year (save 30%)
-- "Join Pro Waitlist" CTA
-
-#### Capabilities Tab
-- Memory toggle (generate memory from chat history)
-- Memory info box explaining local-first processing
-- Manage Memories button → opens Memory Manager modal
-- Import Memory button → opens Import Memory modal
-- Tool Access mode (radio buttons):
-  - Load tools when needed (default)
-  - Tools always loaded
-
-#### Appearance Tab
-- Dark mode toggle (live preview)
-- Font size pills: Small, Medium, Large
-- Compact mode toggle
-
-### 🆘 Help Center Widget
-
-Slide-in panel with two tabs (Home / Help):
-
-**Home tab:**
-- System status card ("All Systems Operational")
-- "Send us a message" → mailto:support@vyomagroup.com
-- Search bar with live filtering
-- 8 FAQ items with article detail view
-
-**Help tab:**
-- Article search bar
-- 7 collection categories (Getting Started, Chat & Features, Image Analysis, Free & Pro Plans, Privacy & Security, Troubleshooting, About Vyoma)
-
-### 👤 Profile Menu
-
-Dropdown from user avatar in sidebar footer:
-
-- Email display
-- **Settings** (with `Ctrl ,` shortcut hint)
-- **Language** submenu (12 languages: English, Hindi, Spanish, French, German, Portuguese, Japanese, Korean, Chinese, Arabic, Italian, Indonesian)
-- **Get Help** → opens Help Center panel
-- **Upgrade Plan** → opens Upgrade modal
-- **Learn More** submenu:
-  - About Vyoma (vyomagroup.com)
-  - About Arka (vyomagroup.com/arka)
-  - Tutorials (vyomagroup.com/tutorials)
-  - Usage Policy (vyomagroup.com/guidelines)
-  - Privacy Policy (vyomagroup.com/privacy)
-  - Keyboard Shortcuts → opens shortcuts modal
-- **Log out**
-
-### 🌐 Language Selector
-
-12-language selector available from the profile dropdown submenu. Saves selection to `arka_language` in localStorage. Active language is marked with ✓.
-
-### 🎹 Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl + K` | New Chat |
-| `Ctrl + F` | Search Chats |
-| `Enter` | Send Message |
-| `Shift + Enter` | New Line |
-| `Ctrl + D` | Toggle Theme |
-| `Ctrl + ,` | Open Settings |
-| `Esc` | Close Modal / Submenu |
-
-### 🌗 Dark / Light Mode
-
-- Default: Dark mode
-- Toggle via: login screen button, appearance settings, or `Ctrl + D`
-- Persisted in `arka-theme` localStorage key
-- Uses CSS custom properties for full theme coverage
-- Dark: `#0c0c0c` background, warm neutrals
-- Light: `#faf8f5` background, earthy tones
-- Accent color: `#e8622a` (consistent across both themes)
-
-### 💎 Free / Pro Plan System
-
-Client-side plan management with upgrade path:
-
-- Plan stored in `arka_user.plan` (`"free"` or `"pro"`)
-- Upgrade modal with benefits list and "Join Pro Waitlist" CTA
-- Plan badge in sidebar (Free/Pro) and settings
-- Upgrade button hidden for Pro users
-- Usage badges hidden for Pro users
-
-### 📊 Usage Tracking
-
-Per-user, 24-hour rolling window usage tracking:
-
-- **Image uploads:** tracked in `arka_image_usage_{uid}`
-- **File analyses:** tracked in `arka_file_usage_{uid}`
-- **Deep reasoning:** tracked in `arka_reasoning_usage_{uid}`
-- **Total chats:** counted from `arka_chats_{uid}`
-- Displayed in top bar (image/reasoning badges) and Account settings (2×2 usage grid)
-- Warning badges appear when limits are reached
-
-### 🎤 Voice Input (Dictation)
-
-Browser-native speech recognition via Web Speech API:
-
-- Microphone button in input bar
-- Uses `SpeechRecognition` / `webkitSpeechRecognition`
-- Default language: `en-IN`
-- Appends dictated text to existing input
-- Visual recording indicator on mic button
-- Hidden if browser doesn't support Speech Recognition
-- Shows toast if microphone access is denied
-
-### 📜 Vyoma's Guidelines Modal
-
-Full usage policy modal (effective March 30, 2026) with sections:
-
-- Our Mission
-- What Arka is designed for
-- What is NOT allowed
-- Important Disclaimers
-- Your Privacy
-- Contact: arka.ai.support@gmail.com
-
-### 📤 Export Data System
-
-Export modal with:
-
-- Date range filters: All, Last 30 days, Last 90 days
-- Includes: Conversations (with count), Profile settings, Account info
-- Exports as JSON file: `arka-data-export-{date}.json`
-
----
-
-## 🛠 Tech Stack
-
-| Layer | Technology | Details |
-|-------|-----------|---------|
-| **Frontend** | HTML5, CSS3, JavaScript (ES Modules) | Single-page application, no framework |
-| **Styling** | Vanilla CSS with CSS Custom Properties | Design tokens, dark/light theme, 4500+ lines |
-| **Fonts** | Google Fonts | Playfair Display (serif), Inter (sans), JetBrains Mono (mono) |
-| **Icons** | Material Symbols Rounded + inline SVGs + custom SVG files | Lucide-style icon set |
-| **Auth** | Firebase Authentication v12.11.0 | Google Sign-In (redirect flow) |
-| **AI Backend** | PHP 8.0+ | cURL to NVIDIA NIM API |
-| **AI Model** | qwen/qwen3.5-122b-a10b | Via NVIDIA `integrate.api.nvidia.com/v1/chat/completions` |
-| **PDF Parsing** | PDF.js 3.11.174 | Client-side PDF text extraction |
-| **Voice** | Web Speech API | Browser-native speech recognition |
-| **SSL** | cacert.pem bundle | For cURL on Windows/XAMPP environments |
-| **Hosting** | Hostinger (Apache) | .htaccess for HTTPS, cache control, file protection |
-
----
-
-## 📁 File Structure
+<div align="center">
 
 ```
-arka/
-├── index.html            # Main SPA (1268 lines) — login, chat, settings, modals
-├── style.css             # Complete stylesheet (4508 lines) — design system, all components
-├── script.js             # Frontend logic (3344 lines) — Firebase, chat, profiling, settings
-├── api.php               # Backend API (305 lines) — routes requests to NVIDIA NIM
-├── config.php            # Configuration (342 lines) — API keys, system prompts, rate limits
-├── history.php           # Chat history manager (217 lines) — CRUD for server-side chat storage
-├── .htaccess             # Apache config — HTTPS, cache control, file protection
-├── .gitignore            # Excludes config.php, chat_history/, IDE files
-├── cacert.pem            # SSL CA bundle for cURL on Windows
-├── README.md             # This file
-├── arka.zip              # Distribution archive
-├── chat_history/         # Server-side chat storage directory (created by history.php)
-└── svg/                  # Custom SVG icons
-    ├── brain-svgrepo-com.svg          # Deep reasoning brain icon
-    ├── files-svgrepo-com.svg          # Attach file icon
-    ├── mic-svgrepo-com.svg            # Microphone / voice input icon
-    ├── send-alt-svgrepo-com.svg       # Send message icon
-    └── warning-1-svgrepo-com.svg      # Usage limit warning icon
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  AI that learns you. Remembers you. Adapts to you.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+</div>
 
 ---
 
-## 🎨 SVG Icons
+## ⚡ What is Arka?
 
-| File | Size | Used In |
-|------|------|---------|
-| `brain-svgrepo-com.svg` | 5.4 KB | Deep reasoning toggle button, reasoning pill, reasoning indicator on AI messages |
-| `files-svgrepo-com.svg` | 719 B | Attach menu button (image/file upload trigger) |
-| `mic-svgrepo-com.svg` | 783 B | Voice input (dictation) button |
-| `send-alt-svgrepo-com.svg` | 993 B | Send message button |
-| `warning-1-svgrepo-com.svg` | 664 B | Usage limit warning badges (images + reasoning) |
+**Arka** *(Sanskrit: अर्क — The Sun)* is an intelligent AI companion built by **[Vyoma Group](https://vyomagroup.online)** — India's next-generation AI company. Unlike generic chatbots, Arka doesn't just respond. It **listens, adapts, remembers, and evolves** with every conversation.
 
-All SVGs use CSS `filter` for dark/light mode adaptation (`brightness(0) invert(1)` for white, or hue-rotate for accent color).
+> *"Most AI talks at you. Arka talks with you."*
+
+Whether you're a student solving calculus, a developer debugging code, a professional drafting reports, or just someone who wants a brilliant friend to think things through — **Arka is built for you.**
+
+---
+
+## 🌟 Feature Showcase
+
+<div align="center">
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   🎭  ADAPTIVE PERSONALITY      🧠  DEEP REASONING          │
+│   ────────────────────────      ──────────────────          │
+│   Speaks your language.         Step-by-step thinking       │
+│   Matches your expertise.       for complex problems.       │
+│   Mirrors your energy.          Shows its work.             │
+│                                                             │
+│   🖼️  IMAGE ANALYSIS            📄  FILE ANALYSIS           │
+│   ──────────────────            ─────────────────           │
+│   Upload, paste, or drag.       PDFs, docs, code.           │
+│   Instant visual insight.       Deep document Q&A.          │
+│   No image generation.          CSV data analysis.          │
+│                                                             │
+│   💾  MEMORY SYSTEM             🌐  MULTILINGUAL            │
+│   ─────────────────             ──────────────              │
+│   Remembers across chats.       English, Hindi,             │
+│   Learns your projects.         Hinglish — natural          │
+│   Imports from ChatGPT.         language detection.         │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+</div>
 
 ---
 
 ## 🚀 Quick Start
 
 ```bash
-# Clone the repository
-git clone https://github.com/vyomagroup/arka-ai.git
-cd arka
+# 1. Clone the repository
+git clone https://github.com/your-username/arka-ai.git
+cd arka-ai/arka
 
-# Add your NVIDIA API key
-# Edit config.php → set NVIDIA_API_KEY
+# 2. Configure your API key
+# Edit config.php and add your NVIDIA API key:
+# define('NVIDIA_API_KEY', 'nvapi-xxxxxxxxxxxx');
+# Get a free key at: https://build.nvidia.com
 
-# Start the PHP development server
+# 3. Start the server
 php -S localhost:8000
 
-# Open in browser
-# Navigate to http://localhost:8000
+# 4. Open in browser
+# → http://localhost:8000
+# → Sign in with Google
+# → Start chatting with Arka! 🎉
 ```
 
-> **Prerequisites:** PHP 8.0+ with cURL extension enabled.
+---
+
+## 📁 Project Structure
+
+```
+arka-ai/
+│
+├── 📁 arka/                      # Main application
+│   ├── 📄 index.html             # Full app UI (auth + chat)
+│   ├── 🎨 style.css              # All styles (~3000 lines)
+│   ├── ⚡ script.js              # Frontend logic (~2000 lines)
+│   ├── 🔧 api.php                # AI backend router
+│   ├── ⚙️  config.php            # API keys & configuration
+│   ├── 📝 history.php            # Server-side chat backup
+│   ├── 📁 svg/                   # Custom SVG icon system
+│   │   ├── brain-svgrepo-com.svg
+│   │   ├── mic-svgrepo-com.svg
+│   │   ├── files-svgrepo-com.svg
+│   │   ├── send-alt-svgrepo-com.svg
+│   │   └── warning-1-svgrepo-com.svg
+│   ├── 📁 chat_history/          # Server-side chat backup
+│   ├── 📁 .well-known/           # AI plugin discovery
+│   └── 📄 .htaccess              # Server config & HTTPS
+│
+├── 📁 seo/                       # SEO optimization files
+│   ├── meta-tags.html
+│   ├── structured-data.js
+│   └── SETUP_GUIDE.md
+│
+├── 🤖 robots.txt                 # Crawler rules
+├── 🗺️  sitemap.xml               # Google sitemap
+├── 🧠 llms.txt                   # AI crawler reference
+├── 📖 llms-full.txt              # Detailed AI reference
+└── 📄 README.md                  # You are here
+```
 
 ---
 
-## 🌐 Deployment (Hostinger)
+## ✨ Features In Depth
 
-### Step-by-Step
+### 🎭 Adaptive Personality Engine
 
-1. **Upload files** via Hostinger File Manager to your domain's `public_html/` directory (or subdomain directory)
+Arka doesn't just answer — it **adapts in real-time** to who you are:
 
-2. **Set your NVIDIA API key** in `config.php`:
-   ```php
-   define('NVIDIA_API_KEY', 'nvapi-your-key-here');
-   ```
+| What Arka Detects | How It Adapts |
+|-------------------|---------------|
+| 🌐 Language (English/Hindi/Hinglish) | Responds in your exact language mix |
+| 🎓 Expertise Level (Beginner → Expert) | Adjusts depth and vocabulary |
+| 💬 Tone (Casual/Formal/Emotional) | Mirrors your energy and style |
+| 😄 Emoji Usage | Uses emojis if you do |
+| 📚 Topics Discussed | Builds context across conversation |
 
-3. **Add domain to Firebase authorized domains:**
-   - Go to [Firebase Console](https://console.firebase.google.com)
-   - Navigate to **Authentication → Settings → Authorized domains**
-   - Add: `arka.vyomagroup.online` (or your domain)
-
-4. **Ensure HTTPS is enabled** on your Hostinger domain (usually automatic with Hostinger)
-
-5. **Verify `.htaccess`** is uploaded and Apache mod_rewrite is enabled:
-   - Forces HTTPS
-   - Prevents caching of `index.html`
-   - Blocks direct access to `config.php` and `history.php`
-   - Protects `chat_history/` directory
-
-6. **Upload `cacert.pem`** — required for SSL verification in cURL requests. Download from [curl.se/ca/cacert.pem](https://curl.se/ca/cacert.pem) if not included.
-
----
-
-## 🔥 Firebase Setup
-
-### Step-by-Step
-
-1. **Create a Firebase project** at [console.firebase.google.com](https://console.firebase.google.com)
-
-2. **Enable Google Sign-In:**
-   - Go to **Authentication → Sign-in method**
-   - Enable **Google** provider
-   - Set support email
-
-3. **Add authorized domains:**
-   - Go to **Authentication → Settings → Authorized domains**
-   - Ensure these are listed:
-     - `localhost`
-     - `arka.vyomagroup.online`
-     - Any other deployment domains
-
-4. **Firebase config is already in `script.js`:**
-   ```javascript
-   const firebaseConfig = {
-     apiKey: "AIzaSyBbv5mvJvQxA_H3WXQzCcaJ8SOwYfG7tzo",
-     authDomain: "arkaai-b3d16.firebaseapp.com",
-     projectId: "arkaai-b3d16",
-     storageBucket: "arkaai-b3d16.firebasestorage.app",
-     messagingSenderId: "510357032532",
-     appId: "1:510357032532:web:5574d7b1750ef737f667c1",
-     measurementId: "G-WQ4J7YRWV8"
-   };
-   ```
-
-5. **Firebase SDK:** Loaded via ES modules from `gstatic.com` (v12.11.0) — no npm required.
+```javascript
+// User profile stored locally — NEVER on servers
+{
+  language: 'hinglish',
+  expertise: 'intermediate', 
+  tone: 'casual',
+  emojiUsage: true,
+  topicsDiscussed: ['coding', 'ai', 'startups'],
+  messageCount: 47,
+  lastActive: 1712000000000
+}
+```
 
 ---
 
-## ⚙️ Configuration Reference
+### 🧠 Deep Reasoning Mode
 
-All constants defined in `config.php`:
+Toggle the **brain icon** to activate step-by-step analytical thinking:
 
-| Constant | Value | Description |
-|----------|-------|-------------|
-| `AI_PROVIDER` | `'nvidia'` | AI provider identifier (NVIDIA NIM exclusively) |
-| `NVIDIA_API_KEY` | `'nvapi-...'` | NVIDIA NIM API key for authentication |
-| `NVIDIA_MODEL` | `'qwen/qwen3.5-122b-a10b'` | The AI model used for all requests |
-| `AVAILABLE_MODELS` | `['nvidia' => [...]]` | Registry of available models (single model) |
-| `SYSTEM_PROMPT` | *(heredoc)* | Default personality prompt (~225 lines) |
-| `REASONING_SYSTEM_PROMPT` | *(heredoc)* | Deep reasoning mode prompt (~80 lines) |
-| `RATE_LIMIT_REQUESTS` | `30` | Max requests per rate limit window |
-| `RATE_LIMIT_WINDOW` | `60` | Rate limit window in seconds |
-| `HISTORY_DIR` | `__DIR__ . '/chat_history'` | Path to server-side chat history storage |
-| `MAX_CONTEXT_MESSAGES` | `20` | Max messages sent as context to the AI |
-| `MAX_TOKENS` | `8192` | Max response tokens (defined but API uses 4096) |
-| `TEMPERATURE` | `0.75` | Model temperature (defined but API uses 1) |
+```
+Normal Mode:  Fast, conversational, direct answers
+              ─────────────────────────────────────
+Reasoning:    🧠 Analysis → Step-by-step thinking
+              ✅ Answer → Clear final conclusion  
+              💡 Considerations → Caveats & follow-ups
+```
 
----
+**When to use Deep Reasoning:**
+- Complex mathematics
+- Multi-step debugging  
+- Strategic decisions
+- Scientific analysis
+- Legal/financial questions *(with disclaimers)*
 
-## 💾 localStorage Keys Reference
-
-| Key | Description | Structure |
-|-----|-------------|-----------|
-| `arka_user` | Current user account data | `{ name, email, photo, uid, plan, joinedAt }` |
-| `arka_chats_{uid}` | All chat conversations (per-user) | `{ chatId: { id, title, messages[], model, provider, starred, projectId, createdAt, updatedAt } }` |
-| `arka_profile_{uid}` | Adaptive personality profile | `{ language, expertise, tone, emojiUsage, topicsDiscussed[], messageCount, avgMessageLength, lastActive, nickname, occupation, preferences }` |
-| `arka_settings_{uid}` | User settings & preferences | `{ notifications, privacyLocation, privacyImprove, privacyMarketing, fontSize, compactMode, memoryEnabled, toolAccessMode }` |
-| `arka_image_usage_{uid}` | Daily image upload counter | `{ count, resetTime }` |
-| `arka_reasoning_usage_{uid}` | Daily reasoning usage counter | `{ count, resetTime }` |
-| `arka_file_usage_{uid}` | Daily file analysis counter | `{ count, resetTime }` |
-| `arka_memory_{uid}` | Persistent memory entries | `{ enabled, lastUpdated, instructions[], identity[], career[], projects[], preferences[] }` |
-| `arka-theme` | Current theme selection | `"dark"` or `"light"` |
-| `arka-provider` | Selected AI provider | `"nvidia"` |
-| `arka-model` | Selected AI model | `"qwen/qwen3.5-122b-a10b"` |
-| `arka_language` | Selected UI language | Language code (e.g., `"en"`, `"hi"`) |
+**Limits:** Free: 3/day · Pro: Unlimited
 
 ---
 
-## 💎 Free vs Pro Plan
+### 🖼️ Image Analysis
 
-| Feature | Free | Pro |
-|---------|------|-----|
-| Chat messages | ✅ Unlimited | ✅ Unlimited |
-| Image analysis | 5 / day | ✅ Unlimited |
-| File analysis | 5 / day | ✅ Unlimited |
-| Deep reasoning | 3 / day | ✅ Unlimited |
+Three ways to analyze images:
+
+```
+📁 Upload Button  →  Click the files icon → Upload Image
+📋 Ctrl+V Paste   →  Copy any image → paste in chat input
+🖱️  Drag & Drop   →  Drag image directly onto input area
+```
+
+**Supported formats:** JPG, PNG, GIF, WebP, BMP (max 10MB)  
+**⚠️ Important:** Arka **analyzes** images — it does NOT generate them.
+
+**Limits:** Free: 5/day · Pro: Unlimited
+
+---
+
+### 📄 File Analysis
+
+Arka reads and understands your files:
+
+```
+Documents  →  PDF, DOC, DOCX, TXT, MD
+Data       →  CSV, JSON  
+Code       →  JS, TS, PY, PHP, HTML, CSS, and all major languages
+```
+
+**What Arka does with files:**
+- Summarizes content
+- Answers questions about the document
+- Reviews and explains code
+- Analyzes data patterns
+- Translates content
+
+**Limits:** Free: 5/day · Pro: Unlimited (50MB max)
+
+---
+
+### 💾 Memory System
+
+Arka remembers across ALL conversations:
+
+```
+┌─────────────────────────────────────────┐
+│  Memory Categories                      │
+│  ─────────────────                      │
+│  📋 Instructions  → Rules you've set    │
+│  👤 Identity      → Your background     │
+│  💼 Career        → Your work context   │
+│  🚀 Projects      → What you're building│
+│  ⭐ Preferences   → How you like things │
+└─────────────────────────────────────────┘
+```
+
+**Import memory from other AIs:**
+Copy a special prompt → paste into ChatGPT/Claude/Gemini → import the response into Arka. Your context follows you.
+
+**Privacy:** Memory lives in YOUR browser. We literally cannot see it.
+
+---
+
+## 💎 Free vs Pro
+
+| Feature | 🆓 Free | ✨ Pro |
+|---------|:-------:|:-----:|
+| Chat messages | ∞ Unlimited | ∞ Unlimited |
+| Image analysis | 5 / day | ∞ Unlimited |
+| File analysis | 5 / day | ∞ Unlimited |
+| Deep reasoning | 3 / day | ∞ Unlimited |
 | File upload size | 10 MB | 50 MB |
-| Arka Standard model | ✅ | ✅ |
-| Chat history & export | ✅ | ✅ |
-| Adaptive personality | ✅ | ✅ |
-| Memory system | ✅ | ✅ |
-| Priority access | ❌ | ✅ |
-| Mindmap generation | ❌ | 🔜 Coming Soon |
-| AI Agent roles | ❌ | 🔜 Coming Soon |
-| Voice I/O | ❌ | 🔜 Coming Soon |
-
-**Pricing (Coming Soon):**
-- Monthly: ₹299 / month
-- Yearly: ₹2,499 / year (save 30%)
+| AI models | Standard | All models |
+| Memory system | ✅ Full | ✅ Full |
+| Chat history | ✅ Full | ✅ Full |
+| Mindmap generation | ❌ | 🔜 Soon |
+| Agent roles | ❌ | 🔜 Soon |
+| Voice I/O | ❌ | 🔜 Soon |
+| Priority speed | Normal | ⚡ Fast |
+| **Price** | **₹0 forever** | **₹299/month** |
 
 ---
 
-## 📊 Usage Limits
+## ⚙️ Configuration
 
-| Feature | Free Limit | Reset |
-|---------|-----------|-------|
-| Image analysis | 5 / day | 24 hours (rolling) |
-| File analysis | 5 / day | 24 hours (rolling) |
-| Deep reasoning | 3 / day | 24 hours (rolling) |
-| API rate limit | 30 requests / 60s | Per-IP, file-based |
+All settings live in `config.php`:
+
+```php
+<?php
+// ═══════════════════════════════════════
+//  ARKA AI — Configuration
+// ═══════════════════════════════════════
+
+// AI Provider (currently: nvidia)
+define('AI_PROVIDER', 'nvidia');
+
+// NVIDIA NIM API Key
+// Get yours free at: https://build.nvidia.com
+define('NVIDIA_API_KEY', 'nvapi-xxxxxxxxxxxx');
+
+// Default Model
+define('NVIDIA_MODEL', 'qwen/qwen3.5-122b-a10b');
+
+// Production Mode (switch to OpenRouter)
+define('IS_PRODUCTION', false);
+
+// Response Settings
+define('MAX_TOKENS', 8192);
+define('TEMPERATURE', 0.75);
+
+// Rate Limiting
+define('RATE_LIMIT_REQUESTS', 30);
+define('RATE_LIMIT_WINDOW', 60);
+?>
+```
+
+### Full Configuration Reference
+
+| Constant | Default | Description |
+|----------|---------|-------------|
+| `AI_PROVIDER` | `'nvidia'` | Active AI provider |
+| `NVIDIA_API_KEY` | `''` | NVIDIA NIM API key |
+| `NVIDIA_MODEL` | `'qwen/qwen3.5-122b-a10b'` | AI model (122B params) |
+| `SYSTEM_PROMPT` | *(heredoc)* | Arka's full personality |
+| `REASONING_SYSTEM_PROMPT` | *(heredoc)* | Deep reasoning personality |
+| `MAX_TOKENS` | `8192` | Max response length |
+| `TEMPERATURE` | `0.75` | Creativity (0.0–1.0) |
+| `RATE_LIMIT_REQUESTS` | `30` | Max req/window |
+| `RATE_LIMIT_WINDOW` | `60` | Window in seconds |
+| `HISTORY_DIR` | `./chat_history` | Backup storage |
+
+---
+
+## 🔑 The AI Model
+
+Arka is powered by **`qwen/qwen3.5-122b-a10b`** via NVIDIA NIM:
+
+```
+┌──────────────────────────────────────────────┐
+│  Qwen 3.5 — 122B Parameters                  │
+│  ────────────────────────────                │
+│  Architecture: Mixture of Experts (MoE)      │
+│  Total params: 122 Billion                   │
+│  Active params: 10 Billion per request       │
+│  Result: Massive knowledge, fast responses   │
+│                                              │
+│  Vision: ✅ Image analysis supported         │
+│  Reasoning: ✅ Extended thinking mode        │
+│  Languages: ✅ Hindi, English, Hinglish      │
+└──────────────────────────────────────────────┘
+```
+
+---
+
+## 🔒 Privacy & Security
+
+```
+YOUR DATA LIVES HERE:
+─────────────────────────────────────────────────
+Browser localStorage  →  Your device only
+                          We CANNOT see this
+
+Firebase Auth         →  Only your Google UID
+                          No conversations stored
+
+NVIDIA API            →  Processes your message
+                          Does NOT store it
+─────────────────────────────────────────────────
+```
+
+### localStorage Keys Reference
+
+| Key | Contents | Scope |
+|-----|----------|-------|
+| `arka_user` | Name, email, plan, joined date | Global |
+| `arka_chats_{uid}` | All conversations | Per-user |
+| `arka_profile_{uid}` | Adaptive personality data | Per-user |
+| `arka_memory_{uid}` | Long-term memory entries | Per-user |
+| `arka_image_usage_{uid}` | Daily image count + reset | Per-user |
+| `arka_file_usage_{uid}` | Daily file count + reset | Per-user |
+| `arka_reasoning_usage_{uid}` | Daily reasoning count | Per-user |
+| `arka_settings_{uid}` | App preferences | Per-user |
+| `arka-theme` | `dark` or `light` | Global |
+| `arka_language` | Selected UI language | Global |
 
 ---
 
@@ -562,226 +389,311 @@ All constants defined in `config.php`:
 
 | Shortcut | Action |
 |----------|--------|
-| `Ctrl + K` | New Chat |
-| `Ctrl + F` | Search Chats |
-| `Enter` | Send Message |
-| `Shift + Enter` | New Line (in message input) |
-| `Ctrl + D` | Toggle Dark / Light Theme |
-| `Ctrl + ,` | Open Settings |
-| `Ctrl + V` | Paste Image from clipboard |
-| `Esc` | Close active modal, submenu, or panel |
+| `Enter` | Send message |
+| `Shift + Enter` | New line in message |
+| `Ctrl + K` | New chat |
+| `Ctrl + D` | Toggle dark/light mode |
+| `Ctrl + ,` | Open settings |
+| `Escape` | Close any modal or menu |
 
 ---
 
-## 🔌 API Reference
-
-### Endpoint
+## 🗺️ Roadmap
 
 ```
-POST /api.php
+PHASE 1 — Core ✅ COMPLETE
+──────────────────────────
+[x] Google Auth (Firebase)
+[x] Multi-provider AI backend  
+[x] Adaptive personality engine
+[x] Chat history (star/rename/delete)
+[x] Image analysis (upload/paste/drag)
+[x] File analysis (PDF/docs/code)
+[x] Deep reasoning toggle
+[x] Memory system + import
+[x] Free/Pro plan system
+[x] Premium dark/light UI
+[x] Settings (5-tab full page)
+[x] Help center widget
+[x] Language selector (12 languages)
+[x] Mobile responsive UI
+[x] Google Search Console setup
+[x] AI SEO (llms.txt)
+[x] Deployed at arka.vyomagroup.online
+
+PHASE 2 — Growth 🚧 IN PROGRESS
+─────────────────────────────────
+[ ] NVIDIA API live testing
+[ ] Pro plan payments (Razorpay)
+[ ] Performance optimization
+[ ] PWA mobile app
+[ ] Web search integration
+
+PHASE 3 — Agents 🔮 COMING SOON
+─────────────────────────────────
+[ ] 🧑‍⚖️  Legal Advisor Agent
+[ ] 💰 Financial Advisor Agent
+[ ] 🏥 Health Counselor Agent
+[ ] 💼 Career Coach Agent
+[ ] 🗺️  Mindmap generation
+[ ] 🎤 Voice input/output
+[ ] 📱 Mobile app (React Native)
+[ ] ☁️  Cloud sync (Firebase Firestore)
 ```
-
-### Request Body
-
-```json
-{
-  "messages": [
-    { "role": "user", "content": "Hello" },
-    { "role": "assistant", "content": "Hi there!" },
-    { "role": "user", "content": "How are you?" }
-  ],
-  "provider": "nvidia",
-  "model": "qwen/qwen3.5-122b-a10b",
-  "image": "data:image/png;base64,...",
-  "reasoning": false,
-  "stream": false,
-  "userProfile": "[USER PROFILE] Language: english | Expertise: intermediate | ...",
-  "userContext": "User's full name: Alice. User prefers to be called: Ali. ..."
-}
-```
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `messages` | array | ✅ | Conversation messages (user/assistant roles) |
-| `provider` | string | ❌ | AI provider (forced to `"nvidia"` server-side) |
-| `model` | string | ❌ | Model ID (forced to configured model server-side) |
-| `image` | string | ❌ | Base64 data URL for image analysis |
-| `reasoning` | boolean | ❌ | Enable deep reasoning mode |
-| `stream` | boolean | ❌ | Enable streaming responses (SSE) |
-| `userProfile` | string | ❌ | Adaptive profile summary for context |
-| `userContext` | string | ❌ | Identity context (name, nickname, occupation) |
-
-### Response
-
-**Success (200):**
-```json
-{
-  "reply": "Here's my response..."
-}
-```
-
-**Error (4xx/5xx):**
-```json
-{
-  "error": "Error description message"
-}
-```
-
-### Model List Endpoint
-
-```
-GET /api.php?action=models
-```
-
-Returns:
-```json
-{
-  "models": {
-    "nvidia": {
-      "qwen/qwen3.5-122b-a10b": "Arka Standard"
-    }
-  }
-}
-```
-
-### Error Handling
-
-- `400` — Invalid request (missing `messages` field)
-- `405` — Method not allowed (non-POST/GET)
-- `429` — Rate limit exceeded (30 req/60s per IP)
-- `500` — API error (NVIDIA API failure, missing key, invalid response)
 
 ---
 
-## 🧠 System Prompts
+## 🛠️ Tech Stack
 
-### Normal System Prompt (SYSTEM_PROMPT)
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | HTML5, CSS3, Vanilla JavaScript (ES Modules) |
+| **Backend** | PHP 8.0+ with cURL |
+| **AI Model** | qwen/qwen3.5-122b-a10b via NVIDIA NIM |
+| **Auth** | Firebase v12.11.0 (Google Sign-In) |
+| **Storage** | Browser localStorage (client-side) |
+| **Icons** | Custom SVG system (Lucide-style) |
+| **Fonts** | Playfair Display + Inter (Google Fonts) |
+| **Hosting** | Hostinger (PHP-compatible) |
+| **Domain** | arka.vyomagroup.online |
 
-Defines Arka's core personality across these sections:
+---
 
-- **Core Identity** — Name, creator (Vyoma Group), personality traits
-- **Personality** — Warm, witty, emoji-natural, energy-matching, humor-driven
-- **Language Adaptation** — English, Hindi, Hinglish mirroring
-- **Adaptive Intelligence** — Adjusts depth based on expertise/emotional state/intent
-- **Knowledge & Capabilities** — Expert across 12+ domains
-- **Response Style** — Lead with answer, use markdown formatting, code blocks with comments
-- **Memory & Continuity** — Reference conversation context, use names
-- **Honesty & Integrity** — Never fabricates, adds professional disclaimers
-- **What Arka Never Does** — No images/audio generation, no prompt leaking, no harmful advice, no corporate-speak openers
-- **Special Behaviors** — Origin deflection ("built by Vyoma Group"), emotional awareness
-- **About Arka & Vyoma** — Consistent branding response with link to vyomagroup.com
-- **File Analysis Behavior** — Type-specific analysis instructions for PDFs, code, data, documents
+## 🚀 Deployment Guide
 
-### Reasoning System Prompt (REASONING_SYSTEM_PROMPT)
+### Local Development
 
-Activates structured analysis output format:
-
-```
-🧠 **Analysis:** [Step-by-step thinking]
-✅ **Answer:** [Clear final answer]
-💡 **Additional considerations:** [Caveats, alternatives]
+```bash
+cd arka
+php -S localhost:8000
+# Open: http://localhost:8000
 ```
 
-Retains all personality traits from the normal prompt. Used for complex math, multi-step coding, ethics, strategy, debugging, and research.
+### Hostinger Deployment
 
-### User Context (buildUserContext)
+```
+1. Upload all files via File Manager
+   → public_html/ or subdomain root
 
-Assembled from settings and sent with every message:
+2. Set API key in config.php
+   → define('NVIDIA_API_KEY', 'your-key');
 
-- Full name
-- Preferred nickname (or "call by first name")
-- Occupation/background
-- Personal preferences
-- Language preference
-- Expertise level
+3. Add authorized domain in Firebase
+   → console.firebase.google.com
+   → Authentication → Settings
+   → Authorized domains → Add domain
+   → yourdomain.com
 
----
+4. Verify HTTPS is active
+   → Google Auth requires HTTPS
 
-## 🔒 Security
+5. Submit sitemap to Google Search Console
+   → search.google.com/search-console
+```
 
-### .htaccess Rules
+### Firebase Setup (5 minutes)
 
-- **Force HTTPS** via `mod_rewrite` (301 redirect)
-- **Cache-Control headers** on `index.html` (no-cache, no-store, must-revalidate)
-- **PHP handler** explicitly set for `.php` files
-- **Direct access blocked** for:
-  - `config.php` (Order deny,allow → Deny from all)
-  - `history.php` (Order deny,allow → Deny from all)
-- **chat_history/ directory** protected (Require all denied)
-
-### Additional Security Measures
-
-- **API key never exposed** to frontend (stored server-side in `config.php`)
-- **`config.php` in `.gitignore`** — never committed to version control
-- **Error output suppressed** in PHP (`error_reporting(0)`, `display_errors = 0`)
-- **Output buffering** (`ob_start()`) prevents accidental HTML from corrupting JSON responses
-- **Rate limiting** — File-based per-IP rate limiting (30 requests per 60 seconds)
-- **SSL verification** — Uses `cacert.pem` CA bundle for NVIDIA API requests; fallback to no-verify on development
-- **Firebase domain restrictions** — Only authorized domains can use Google Sign-In
-- **HTTPS enforcement** — JS-level redirect for production hosts
-- **Input sanitization** — Chat history filenames sanitized via regex (`/[^a-zA-Z0-9_\-]/`)
-- **Cache-control meta tags** in `index.html` (no-cache, no-store, must-revalidate, Pragma: no-cache, Expires: 0)
+```
+1. Go to console.firebase.google.com
+2. Create new project
+3. Add web app (</> icon)
+4. Select "Use a <script> tag"
+5. Copy the firebaseConfig object
+6. Paste into index.html (already configured)
+7. Enable Google Authentication:
+   Authentication → Sign-in method → Google → Enable
+8. Add your domain to Authorized Domains
+```
 
 ---
 
-## 🐛 Known Issues / TODO
+## 🔧 Troubleshooting
 
-- **`history.php` is blocked** by `.htaccess` (`Deny from all`), which may prevent server-side chat history from working in production. The frontend falls back to localStorage gracefully.
-- **`MAX_TOKENS` (8192)** and **`TEMPERATURE` (0.75)** are defined in `config.php` but the API handler uses hardcoded values of `4096` and `1` respectively.
-- **"Add to Project"** in chat context menu shows "Coming Soon" toast — feature not yet implemented.
-- **Search Chats** (`Ctrl+F`) shortcut is listed in the keyboard shortcuts modal but the search functionality is not implemented in the sidebar.
+<details>
+<summary><b>🔴 "Sorry, I encountered an error"</b></summary>
+
+```
+Cause 1: NVIDIA_API_KEY not set in config.php
+Fix: Add your key from build.nvidia.com
+
+Cause 2: Rate limit exceeded  
+Fix: Wait 1-2 minutes and try again
+
+Cause 3: Network issue
+Fix: Check internet connection
+```
+</details>
+
+<details>
+<summary><b>🔴 Google login not working on Hostinger</b></summary>
+
+```
+Cause: Domain not in Firebase authorized list
+Fix:
+1. Go to console.firebase.google.com
+2. Authentication → Settings → Authorized domains
+3. Add your domain: yourdomain.com
+4. Enable HTTPS on Hostinger
+5. Use popup auth (not redirect) for shared hosting
+```
+</details>
+
+<details>
+<summary><b>🔴 Chat history not saving</b></summary>
+
+```
+Cause: localStorage blocked or private browsing
+Fix: 
+- Disable private/incognito mode
+- Allow site storage in browser settings
+- Check if localStorage is available:
+  Open console → type: localStorage
+```
+</details>
+
+<details>
+<summary><b>🔴 Images not uploading</b></summary>
+
+```
+Cause 1: Daily limit reached (5/5)
+Fix: Wait 24 hours or upgrade to Pro
+
+Cause 2: File too large
+Fix: Image must be under 10MB
+
+Cause 3: Unsupported format
+Fix: Use JPG, PNG, GIF, WebP, or BMP
+```
+</details>
 
 ---
 
-## 🗺 Roadmap
+## 🏗️ Architecture Overview
 
-Based on "Coming Soon" placeholders found in the codebase:
-
-| Feature | Found In | Status |
-|---------|----------|--------|
-| **Mindmap Generation** | Upgrade modal, Billing → Pro benefits | 🔜 Coming Soon |
-| **AI Agent Roles** (Legal, Financial, Health, Career) | Upgrade modal, Billing → Pro benefits | 🔜 Coming Soon |
-| **Voice Input/Output** | Billing → Pro benefits (basic input exists) | 🔜 Coming Soon |
-| **Pro Plan Payment** | Billing → pricing note | 🔜 Coming Soon |
-| **Projects System** | Chat context menu → "Add to Project" | 🔜 Coming Soon |
-| **Help Center Articles** | Help panel collections → shows "Articles being added" toast | 🔜 Coming Soon |
-| **Vyoma Group Website** | System prompt, Learn More → "(page coming soon!)" | 🔜 Coming Soon |
+```
+┌─────────────────────────────────────────────────────┐
+│                    USER BROWSER                      │
+│  ┌─────────────┐  ┌──────────┐  ┌───────────────┐  │
+│  │  index.html │  │ style.css│  │  script.js    │  │
+│  │  (App UI)   │  │ (Styles) │  │  (Logic)      │  │
+│  └──────┬──────┘  └──────────┘  └───────┬───────┘  │
+│         │                               │           │
+│         └───────────── XHR ────────────┘           │
+│                         │                           │
+│         localStorage ◄──┤                           │
+│         (user data)      │                          │
+└──────────────────────────┼──────────────────────────┘
+                           │ POST /api.php
+┌──────────────────────────┼──────────────────────────┐
+│                PHP SERVER│                           │
+│  ┌────────────────────── ▼ ─────────────────────┐   │
+│  │              api.php                          │   │
+│  │         (Request Router)                      │   │
+│  │  ┌────────────────────────────────────────┐  │   │
+│  │  │ config.php → SYSTEM_PROMPT             │  │   │
+│  │  │            → REASONING_PROMPT          │  │   │
+│  │  │            → Rate Limiter              │  │   │
+│  │  └──────────────────┬─────────────────────┘  │   │
+│  └─────────────────────┼────────────────────────┘   │
+└────────────────────────┼────────────────────────────┘
+                         │ HTTPS API Call
+┌────────────────────────┼────────────────────────────┐
+│              NVIDIA NIM│                             │
+│  ┌───────────────────  ▼ ────────────────────────┐  │
+│  │     qwen/qwen3.5-122b-a10b                    │  │
+│  │     (122B params, 10B active — MoE)           │  │
+│  │     Vision ✅  Reasoning ✅  Hindi ✅          │  │
+│  └───────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 🏢 About Vyoma Group
+## 📊 Usage Limits at a Glance
 
-- **Company:** Vyoma Group
-- **Website:** [vyomagroup.online](https://vyomagroup.online)
-- **Arka Live:** [arka.vyomagroup.online](https://arka.vyomagroup.online)
-- **Support Email:** [arka.ai.support@gmail.com](mailto:arka.ai.support@gmail.com)
-- **Support (Help Center):** [support@vyomagroup.com](mailto:support@vyomagroup.com)
-- **Mission:** Building the next generation of intelligent AI tools for everyone.
-- **Guidelines:** Effective March 30, 2026
+```
+                 FREE PLAN        PRO PLAN
+                 ─────────        ────────
+Chat Messages    ∞ Unlimited      ∞ Unlimited
+Images/day       ████░░ 5         ∞ Unlimited  
+Files/day        ████░░ 5         ∞ Unlimited
+Reasoning/day    ███░░░ 3         ∞ Unlimited
+File size        ██░░░ 10MB       █████ 50MB
+Reset time       ⏰ 24 hours      N/A
+Price            ₹0 forever       ₹299/month
+```
+
+---
+
+## 🌐 Live URLs
+
+| Resource | URL |
+|----------|-----|
+| 🤖 Arka AI App | [arka.vyomagroup.online](https://arka.vyomagroup.online) |
+| 🏠 Vyoma Group | [vyomagroup.online](https://vyomagroup.online) |
+| 📚 Documentation | [vyomagroup.online/docs/](https://vyomagroup.online/docs/) |
+| 📖 Blog | [vyomagroup.online/blog/](https://vyomagroup.online/blog/) |
+| 📋 Guidelines | [vyomagroup.online/guidelines/](https://vyomagroup.online/guidelines/) |
+| 🔄 Changelog | [vyomagroup.online/changelog/](https://vyomagroup.online/changelog/) |
+| 🟢 Status | [vyomagroup.online/status/](https://vyomagroup.online/status/) |
+
+---
+
+## 📬 Contact & Support
+
+| Channel | Address | Response |
+|---------|---------|----------|
+| 💬 Support | support@vyomagroup.online | < 48 hrs |
+| 💼 Business | hello@vyomagroup.online | < 48 hrs |
+| 🛡️ Safety | safety@vyomagroup.online | < 24 hrs |
+
+---
+
+## 🤝 Contributing
+
+Arka AI is currently a closed-source project. However:
+
+- 🐛 **Bug Reports** → Open an issue with full details
+- 💡 **Feature Ideas** → Email hello@vyomagroup.online
+- 📖 **Documentation** → PRs for docs improvements welcome
 
 ---
 
 ## 📄 License
 
+```
 MIT License
 
 Copyright (c) 2026 Vyoma Group
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person 
+obtaining a copy of this software and associated documentation 
+files (the "Software"), to deal in the Software without 
+restriction, including without limitation the rights to use, 
+copy, modify, merge, publish, distribute, sublicense, and/or 
+sell copies of the Software...
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+```
 
 ---
 
 <div align="center">
 
-Built with ♥ by **Vyoma Group**
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  
+  ✦  Built with passion in India, for the world  ✦
 
-Powered by **NVIDIA NIM**
+  Powered by NVIDIA NIM · Secured by Firebase
+  
+  © 2026 Vyoma Group · Intelligence for Everyone
 
-✦
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+[![Try Arka AI](https://img.shields.io/badge/Try_Arka_AI-Free_Forever-e8622a?style=for-the-badge&logo=sparkles&logoColor=white)](https://arka.vyomagroup.online)
+
+*"The best AI is the one that feels like it was built just for you."*
 
 </div>
-]]>
